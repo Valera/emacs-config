@@ -17,9 +17,16 @@
 (global-set-key [(control shift tab)] 'tabbar-forward)
 (global-set-key [(control meta shift tab)] 'tabbar-backward)
 
-(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
+(setenv "CL_SOURCE_REGISTRY"
+ "(:source-registry
+ (:tree \"/home/vfedotov/lisp/libs/\")
+ (:tree \"/home/vfedotov/projects/\")
+ :inherit-configuration)")
+
+;(setq inferior-lisp-program "/home/vfedotov/local/bin/sbcl") ; your Lisp system
 ;(setq inferior-lisp-program "/usr/local/bin/sbcl") ; your Lisp system
-(add-to-list 'load-path "~/lisp/slime-2009-10-04/")  ; your SLIME directory
+(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
+(add-to-list 'load-path "~/lisp/slime/")  ; your SLIME directory
 (require 'slime)
 (slime-setup '(slime-fancy slime-repl))
 
@@ -34,6 +41,7 @@
 ;; Setting for SLIME to handle utf8.
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
+(setq slime-inhibit-pipelining nil)
 
 (require 'color-theme)
 
@@ -73,3 +81,5 @@
   '(progn
      (color-theme-bharadwaj)))
 
+
+(put 'downcase-region 'disabled nil)
