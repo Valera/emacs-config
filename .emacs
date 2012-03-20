@@ -17,26 +17,12 @@
 (global-set-key [(control shift tab)] 'tabbar-forward)
 (global-set-key [(control meta shift tab)] 'tabbar-backward)
 
-(setenv "CL_SOURCE_REGISTRY"
- "(:source-registry
- (:tree \"/home/vfedotov/lisp/libs/\")
- (:tree \"/home/vfedotov/projects/\")
- :inherit-configuration)")
-
-;(setq inferior-lisp-program "/home/vfedotov/local/bin/sbcl") ; your Lisp system
-;(setq inferior-lisp-program "/usr/local/bin/sbcl") ; your Lisp system
-(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
-(add-to-list 'load-path "~/lisp/slime/")  ; your SLIME directory
-(require 'slime)
-(slime-setup '(slime-fancy slime-repl))
-
-
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "gainsboro" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "unknown" :family "Droid Sans Mono")))))
+ '(default ((t (:inherit nil :stipple nil :background "#1e1e27" :foreground "#cfbfad" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Liberation Mono")))))
 
 ;; Setting for SLIME to handle utf8.
 (set-language-environment "UTF-8")
@@ -79,7 +65,23 @@
 
 (eval-after-load "color-theme"
   '(progn
-     (color-theme-bharadwaj)))
+     (color-theme-inkpot)))
 
 
 (put 'downcase-region 'disabled nil)
+
+(setenv "CL_SOURCE_REGISTRY"
+ "(:source-registry
+ (:tree \"/home/vfedotov/lisp/libs/\")
+ (:tree \"/home/vfedotov/projects/\")
+ :inherit-configuration)")
+
+(setq inferior-lisp-program "/opt/mysbcl/bin/sbcl")
+(add-to-list 'load-path "/home/vfedotov/lisp/slime/")
+(require 'slime)
+(slime-setup '(slime-fancy slime-repl))
+;; Setting for SLIME to handle utf8. 
+(set-language-environment "UTF-8")
+(setq slime-net-coding-system 'utf-8-unix)
+(setq slime-inhibit-pipelining nil)
+
