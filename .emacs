@@ -8,67 +8,20 @@
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
-;(add-to-list 'load-path "/path/to/highlight-parentheses")
-(require 'highlight-parentheses)
-
 ;; tabs
 (require 'tabbar)
 (tabbar-mode t)
 (global-set-key [(control shift tab)] 'tabbar-forward)
 (global-set-key [(control meta shift tab)] 'tabbar-backward)
 
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#1e1e27" :foreground "#cfbfad" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "Liberation Mono")))))
-
-;; Setting for SLIME to handle utf8.
-(set-language-environment "UTF-8")
-(setq slime-net-coding-system 'utf-8-unix)
-(setq slime-inhibit-pipelining nil)
+(put 'downcase-region 'disabled nil)
 
 (require 'color-theme)
 
-(defun color-theme-inkpot ()
- "Color theme based on the Inkpot theme. Ported and tweaked by Per Vognsen."
- (interactive)
- (color-theme-install
-  '(color-theme-inkpot
-	  ((foreground-color . "#cfbfad")
-	   (background-color . "#1e1e27")
-	   (border-color . "#3e3e5e")
-	   (cursor-color . "#404040")
-	   (background-mode . dark))
-	  (region ((t (:background "#404040"))))
-	  (highlight ((t (:background "#404040"))))
-	  (fringe ((t (:background "#16161b"))))
-	  (show-paren-match-face ((t (:background "#606060"))))
-	  (isearch ((t (:bold t :foreground "#303030" :background "#cd8b60"))))
-	  (modeline ((t (:bold t :foreground "#b9b9b9" :background "#3e3e5e"))))
-	  (modeline-inactive ((t (:foreground "#708090" :background "#3e3e5e"))))
-	  (modeline-buffer-id ((t (:bold t :foreground "#b9b9b9" :background "#3e3e5e"))))
-	  (minibuffer-prompt ((t (:bold t :foreground "#708090"))))
-	  (font-lock-builtin-face ((t (:foreground "#c080d0"))))
-	  (font-lock-comment-face ((t (:foreground "#708090")))) ; original inkpot: #cd8b00
-	  (font-lock-constant-face ((t (:foreground "#506dbd"))))
-	  (font-lock-doc-face ((t (:foreground "#cd8b00"))))
-	  (font-lock-function-name-face ((t (:foreground "#87cefa"))))
-	  (font-lock-keyword-face ((t (:bold t :foreground "#c080d0"))))
-  (font-lock-preprocessor-face ((t (:foreground "309090"))))
-  (font-lock-reference-face ((t (:bold t :foreground "#808bed"))))
-  (font-lock-string-face ((t (:foreground "#ffcd8b" :background "#404040"))))
-	(font-lock-type-face ((t (:foreground "#ff8bff"))))
-(font-lock-variable-name-face ((t nil)))
-	(font-lock-warning-face ((t (:foreground "#ffffff" :background "#ff0000")))))))
-
 (eval-after-load "color-theme"
   '(progn
-     (color-theme-inkpot)))
-
-
-(put 'downcase-region 'disabled nil)
+     (color-theme-initialize)
+     (color-theme-snowish)))
 
 (setenv "CL_SOURCE_REGISTRY"
  "(:source-registry
@@ -76,12 +29,70 @@
  (:tree \"/home/vfedotov/projects/\")
  :inherit-configuration)")
 
-(setq inferior-lisp-program "/opt/mysbcl/bin/sbcl")
-(add-to-list 'load-path "/home/vfedotov/lisp/slime/")
+;;; SLIME setup
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;(setq inferior-lisp-program "/opt/mysbcl/bin/sbcl")
+(setq inferior-lisp-program "/usr/bin/sbcl")
+;(add-to-list 'load-path "/home/vfedotov/lisp/slime/")
 (require 'slime)
 (slime-setup '(slime-fancy slime-repl))
 ;; Setting for SLIME to handle utf8. 
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
+;; set variable for slime to show function tips while
+;; evaluating time-consuming function.
 (setq slime-inhibit-pipelining nil)
 
+;;; closure-template-html-mode
+(add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/cl-closure-template-20120305-git")
+(require 'closure-template-html-mode)
+
+;;; org-mode
+(require 'org-install)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(setq org-agenda-files (list "~/org/newgtd.org"))
+(setq org-agenda-start-on-weekday 1)
+(setq calendar-week-start-day 1)
+(setq org-refile-targets '(("~/org/newgtd.org" :maxlevel . 1)
+			   ("~/org/someday.org" :level . 1)))
+
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "snow2" :foreground "darkslategray" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Droid Sans Mono")))))
+
+
+
+; Non-empty sub-sets of S
+(defun nepowerset (S)
+  (let ((x (car S)))
+    (if (cdr S)
+	(let ((y (nepowerset (remove x S))))
+	  (append (list (list x)) 
+		  (mapcar (lambda (e) (cons x e)) y)
+		  y))
+      (list (list x)))))
+; Map Modifier-CyrillicLetter to the underlying Modifier-LatinLetter, so that
+; control sequences can be used when keyboard mapping is changed outside of
+; Emacs.
+;
+; For this to work correctly, .emacs must be encoded in the default coding
+; system.
+;
+(mapcar* 
+ (lambda (r e) ; R and E are matching Russian and English keysyms
+   ; iterate over modifier subsets
+   (mapc (lambda (mod)
+	   (define-key input-decode-map 
+	     (vector (append mod (list r))) (vector (append mod (list e)))))
+	 (nepowerset '(control meta super hyper)))
+   ; finally, if Russian key maps nowhere, remap it to the English key without
+   ; any modifiers
+   (define-key local-function-key-map (vector r) (vector e)))
+   "йцукенгшщзхъфывапролджэячсмитьбю"
+   "qwertyuiop[]asdfghjkl;'zxcvbnm,.")
