@@ -56,8 +56,8 @@
 (setq org-agenda-files (list "~/org/newgtd.org"))
 (setq org-agenda-start-on-weekday 1)
 (setq calendar-week-start-day 1)
-(setq org-refile-targets '(("~/org/newgtd.org" :maxlevel . 1)
-			   ("~/org/someday.org" :level . 1)))
+(setq org-refile-targets '(("~/org/newgtd.org" :maxlevel . 2)
+			   ("~/org/someday.org" :maxlevel . 2)))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
