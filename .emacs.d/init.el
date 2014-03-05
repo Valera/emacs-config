@@ -6,6 +6,8 @@
  '(current-language-environment "UTF-8")
  '(show-paren-mode t))
 
+(setq inhibit-splash-screen t)
+
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 ;; tabs
@@ -96,3 +98,18 @@
    (define-key local-function-key-map (vector r) (vector e)))
    "йцукенгшщзхъфывапролджэячсмитьбю"
    "qwertyuiop[]asdfghjkl;'zxcvbnm,.")
+
+;; to setup tabs
+(setq c-basic-indent 2)
+(setq tab-width 4)
+(setq-default indent-tabs-mode nil)
+
+
+
+
+;; Magit
+(autoload 'magit-status "magit" nil t)
+
+;(setq-default indent-tabs-mode nil) ; always replace tabs with spaces
+;(setq-default tab-width 4) ; set tab width to 4 for all buffers
+(setq-default c-basic-offset 4)
